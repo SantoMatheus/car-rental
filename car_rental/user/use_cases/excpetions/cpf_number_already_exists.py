@@ -1,0 +1,2 @@
+class CpfNumberAlreadyExists(Exception):
+    pass

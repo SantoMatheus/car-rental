@@ -5,7 +5,7 @@ from car_rental.user.models import User
 
 class CreateUserSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=100)
-    cpf = serializers.CharField(max_length=11)
+    cpf = serializers.CharField(max_length=11, min_length=11)
     birth_date = serializers.DateTimeField()
     password = serializers.CharField(max_length=20)
 

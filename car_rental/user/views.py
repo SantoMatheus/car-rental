@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import CreateUserSerializer, CreatUserOutputSerializer
 from .use_cases.create_user_use_case import CreateUserUseCase
+from .use_cases.excpetions.cpf_number_already_exists import CpfNumberAlreadyExists
 
 
 class CreateUserViewSet(APIView):
@@ -28,7 +29,10 @@ class CreateUserViewSet(APIView):
         birth_date = serializer.validated_data['birth_date']
         password = serializer.validated_data['password']
 
-        user = self.create_user_use_case.execute(name=name, cpf=cpf, birth_date=birth_date, password=password)
+        try:
+            user = self.create_user_use_case.execute(name=name, cpf=cpf, birth_date=birth_date, password=password)
+        except CpfNumberAlreadyExists as exc:
+            return Response(exc.args[0], status=status.HTTP_409_CONFLICT)
 
         output = CreatUserOutputSerializer(instance=user)
         return Response(data=output.data, status=status.HTTP_201_CREATED)
