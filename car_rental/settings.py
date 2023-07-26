@@ -38,9 +38,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # rest
+    'rest_framework',
+    'rest_framework.authtoken',
+
     # swagger
     'drf_yasg',
 
+    'car_rental.authentication',
+    'car_rental.cars',
     'car_rental.user',
 
 ]

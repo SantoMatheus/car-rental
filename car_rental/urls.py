@@ -27,5 +27,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-docs', schema_view.with_ui('swagger', cache_timeout=None)),
+    path('api/v1/', include('car_rental.authentication.urls'), name='authentication'),
+    path('api/v1/', include('car_rental.cars.urls'), name='cars'),
     path('api/v1/', include('car_rental.user.urls'), name='user'),
 ]

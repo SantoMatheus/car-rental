@@ -4,8 +4,9 @@ from ..models import User
 
 class CreateUserUseCase:
     def execute(self, name, cpf, birth_date, password):
-        if cpf:
-            raise CpfNumberAlreadyExists('Cpf já cadastrado.')
+        user_queryset = User.objects.filter(cpf=cpf)
+        if user_queryset.exists() is True:
+            raise CpfNumberAlreadyExists()
 
         user = User(name=name, cpf=cpf, birth_date=birth_date, username=cpf)
         user.set_password(raw_password=password)
