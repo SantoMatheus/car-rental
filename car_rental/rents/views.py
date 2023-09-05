@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 
 from car_rental.authentication.auth_classes.app_authentication import AppAuthentication
 from car_rental.rents.serializers import CreateRentInputSerializer, CreateRentOutputSerializer
-from car_rental.rents.use_cases.create_rent_use_case import RentCreateUseCase
+from car_rental.rents.use_cases.create_rent_use_case import LegalRepresentativeRentCreateUseCase
 
 
 class CreateRentViewSet(APIView):
@@ -23,15 +23,15 @@ class CreateRentViewSet(APIView):
     )
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.rent_create_use_case = RentCreateUseCase()
+        self.rent_create_use_case = LegalRepresentativeRentCreateUseCase()
 
     def post(self, request: Request):
         serializer = CreateRentInputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        user = serializer.validated_data['user']
+        user = serializer.validated_data['users']
         car_plate = serializer.validated_data['car_plate']
-        start_date = serializer.validated_data['start_date']
+        start_date = serializer.validated_data['days_amount']
         end_date = serializer.validated_data['end_date']
 
         new_rent = self.rent_create_use_case.execute(user=user, start_date=start_date, car_plate=car_plate,

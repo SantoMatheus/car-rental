@@ -47,7 +47,11 @@ INSTALLED_APPS = [
 
     'car_rental.authentication',
     'car_rental.cars',
-    'car_rental.user',
+    'car_rental.users',
+    'car_rental.rents',
+    'car_rental.charges',
+    'car_rental.payments',
+
 
 ]
 
@@ -123,7 +127,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-AUTH_USER_MODEL = 'user.User'
+AUTH_USER_MODEL = 'users.LegalRepresentative'
 
 
 # Static files (CSS, JavaScript, Images)
@@ -138,6 +142,7 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SWAGGER_SETTINGS = {
+    'public': True,
     'SECURITY_DEFINITIONS': {
         'authorization': {
             'type': 'apiKey',

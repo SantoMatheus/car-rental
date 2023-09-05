@@ -21,13 +21,12 @@ class CategorieRegisterViewSet(APIView):
         self.categorie_register_use_case = CategorieRegisterUseCase()
 
     @swagger_auto_schema(
-        request_body = CategorieRegisterInputSerializer(),
-        responses ={
+        request_body=CategorieRegisterInputSerializer(),
+        responses={
             status.HTTP_201_CREATED: CategorieRegisterOutputSerializer(),
             status.HTTP_400_BAD_REQUEST: 'Bad request.'
         }
     )
-
     def post(self, request: Request):
         serializer = CategorieRegisterInputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -78,4 +77,3 @@ class CarRegisterViewSet(APIView):
 
         output = CarRegisterOutputSerializer(instance=new_car)
         return Response(data=output.data, status=status.HTTP_201_CREATED)
-

@@ -31,5 +31,4 @@ class CarRegisterOutputSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Car
-        fields = ['chassis_number', 'manufacturer', 'manufacture_year', 'model_year', 'mileage', 'color',
-                  'fuel_type', 'fuel_level']
+        fields = '__all__'

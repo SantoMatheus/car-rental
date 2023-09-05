@@ -9,7 +9,7 @@ class CustomAuthTokenSerializer(AuthTokenSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
 
-        user = data['user']
+        user = data['users']
         user.last_login = datetime.utcnow().replace(tzinfo=pytz.utc)
         user.save()
 

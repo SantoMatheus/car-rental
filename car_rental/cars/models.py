@@ -26,6 +26,11 @@ class CarCategorie(TimeStampedModel):
 
 class Car(TimeStampedModel):
 
+    class CarStatusChoices(DjangoChoices):
+        AVAILABLE = ChoiceItem("AVAILABLE")
+        RENTED = ChoiceItem("RENTED")
+        IN_MANUTENCION = ChoiceItem("IN_MANUTENCION")
+
     class FuelTypeChoices(DjangoChoices):
         GASOLINE = ChoiceItem("GASOLINE"),
         ETHANOL = ChoiceItem("ETHANOL"),
@@ -47,4 +52,4 @@ class Car(TimeStampedModel):
     color = models.CharField(max_length=50)
     fuel_type = models.CharField(choices=FuelTypeChoices, max_length=30)
     fuel_level = models.CharField(choices=FuelLevelChoices, max_length=30)
-    status = models.CharField(default="VACANT", max_length=10)
+    status = models.CharField(default="AVAILABLE", max_length=10)
