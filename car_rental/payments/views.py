@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 
 from car_rental.authentication.auth_classes.app_authentication import AppAuthentication
 from car_rental.payments.serializers import PaymentInputSerializer, PaymentOutputSerializer
-from car_rental.payments.use_cases.paymeny_create_use_case import Payment
+from car_rental.payments.use_cases.paymeny_create_use_case import PaymentCreateUseCase
 
 
 class PaymentViewSet(APIView):
@@ -23,16 +23,15 @@ class PaymentViewSet(APIView):
     )
     def __init__(self, *args, **kwargs):
         super().__init__(self, *args, **kwargs)
-        self.payment_create_use_case = Payment()
+        self.payment_create_use_case = PaymentCreateUseCase()
 
     def post(self, request: Request):
         serializer = PaymentInputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         charge = serializer.validated_data['charge']
-        value = serializer.validated_data['value']
 
-        payment = self.payment_create_use_case.execute(charge_id=charge, value=value)
+        payment = self.payment_create_use_case.execute(charge_id=charge)
         output = PaymentOutputSerializer(instance=payment)
 
         return Response(data=output.data, status=status.HTTP_201_CREATED)

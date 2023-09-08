@@ -31,10 +31,8 @@ class CreateRentViewSet(APIView):
 
         user = serializer.validated_data['users']
         car_plate = serializer.validated_data['car_plate']
-        start_date = serializer.validated_data['days_amount']
-        end_date = serializer.validated_data['end_date']
+        days_amount = serializer.validated_data['days_amount']
 
-        new_rent = self.rent_create_use_case.execute(user=user, start_date=start_date, car_plate=car_plate,
-                                                     end_date=end_date)
+        new_rent = self.rent_create_use_case.execute(user=user, days_amount=days_amount, car_plate=car_plate)
         output = CreateRentOutputSerializer(instance=new_rent)
         return Response(data=output.data, status=status.HTTP_201_CREATED)

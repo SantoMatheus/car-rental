@@ -6,7 +6,6 @@ from car_rental.payments.models import Payment
 
 class PaymentInputSerializer(serializers.Serializer):
     charge = serializers.UUIDField()
-    value = serializers.FloatField()
 
 
 class PaymentOutputSerializer(serializers.ModelSerializer):

@@ -34,7 +34,7 @@ class LegalRepresentativeRegisterViewSet(APIView):
         cpf = serializer.validated_data['cpf']
         birth_date = serializer.validated_data['birth_date']
         phone_number = serializer.validated_data['phone_number']
-        cep = serializer.validated_data['cep']
+        zip_code = serializer.validated_data['zip_code']
         street_name = serializer.validated_data['street_name']
         number = serializer.validated_data['number']
         city = serializer.validated_data['city']
@@ -44,7 +44,8 @@ class LegalRepresentativeRegisterViewSet(APIView):
 
         legal_representative = self.legal_representative_register_use_case.execute(name=name, cpf=cpf,
                                                                                    birth_date=birth_date,
-                                                                                   phone_number=phone_number, cep=cep,
+                                                                                   phone_number=phone_number,
+                                                                                   zip_code=zip_code,
                                                                                    street_name=street_name,
                                                                                    number=number, city=city,
                                                                                    state=state, country=country,
@@ -109,11 +110,9 @@ class CompanyRegisterViewSet(APIView):
         country = serializer.validated_data['country']
 
         new_company = self.company_register_use_case.execute(legal_representative=legal_representative,
-                                                             cnpj=cnpj, register_name=register_name,
-                                                             company_name=company_name,
-                                                             phone_number=phone_number, cep=cep,
-                                                             street_name=street_name,
-                                                             number=number, city=city,
+                                                             register_name=register_name, company_name=company_name,
+                                                             cnpj=cnpj, phone_number=phone_number, zip_code=cep,
+                                                             street_name=street_name, number=number, city=city,
                                                              state=state, country=country)
         output = LegalRepresentativeRegisterOutputSerializer(instance=new_company)
         return Response(data=output.data, status=status.HTTP_201_CREATED)

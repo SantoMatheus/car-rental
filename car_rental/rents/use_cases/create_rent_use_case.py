@@ -29,7 +29,7 @@ class LegalRepresentativeRentCreateUseCase:
 class CompanyRentCreateUseCase:
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.calculate_toral_price_use_case = CalculateTotalPriceUseCase()
+        self.calculate_total_price_use_case = CalculateTotalPriceUseCase()
 
     def execute(self, user: str, days_amount: int, car_plate: str):
         car = Car.objects.get(car_plate=car_plate)
@@ -40,7 +40,7 @@ class CompanyRentCreateUseCase:
 
         user = Company.objects.get(cnpj=user)
         new_rent = Rent.objects.create(user=user, car_plate=car, days_amount=days_amount)
-        new_rent.total_price = self.calculate_toral_price_use_case.execute(car_plate=car_plate)
+        new_rent.total_price = self.calculate_total_price_use_case.execute(car_plate=car_plate)
         return new_rent
 
 
