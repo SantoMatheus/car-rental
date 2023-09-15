@@ -10,7 +10,7 @@ from django_extensions.db.models import TimeStampedModel
 class LegalRepresentative(TimeStampedModel, AbstractUser):
     id = models.UUIDField(default=uuid.uuid4, unique=True)
     name = models.CharField(max_length=100)
-    cpf = models.CharField(max_length=11, unique=True, primary_key=True)
+    cpf = models.CharField(max_length=11, primary_key=True)
     birth_date = models.DateTimeField()
     phone_number = models.CharField(max_length=11)
     zip_code = models.CharField(max_length=8)

@@ -22,7 +22,7 @@ class PaymentViewSet(APIView):
         }
     )
     def __init__(self, *args, **kwargs):
-        super().__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.payment_create_use_case = PaymentCreateUseCase()
 
     def post(self, request: Request):

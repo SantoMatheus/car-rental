@@ -6,9 +6,15 @@ from car_rental.users.models import LegalRepresentative, Company
 class LegalRepresentativeRegisterInputSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=100)
     cpf = serializers.CharField(max_length=11, min_length=11)
-    cnpj = serializers.CharField(max_length=14, min_length=14)
     birth_date = serializers.DateTimeField()
-    password = serializers.CharField(max_length=12, min_length=6)
+    phone_number = serializers.CharField(max_length=11, min_length=11)
+    zip_code = serializers.CharField(max_length=8, min_length=8)
+    street_name = serializers.CharField(max_length=100)
+    number = serializers.CharField(max_length=10)
+    city = serializers.CharField(max_length=100)
+    state = serializers.CharField(max_length=100)
+    country = serializers.CharField(max_length=50)
+    password = serializers.CharField(max_length=12)
 
 
 class LegalRepresentativeRegisterOutputSerializer(serializers.ModelSerializer):
