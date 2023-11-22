@@ -1,5 +1,7 @@
+import uuid
+
 from car_rental.cars.exceptions.chassis_number_already_exists import ChassisNumberAlreadyExists
-from car_rental.cars.models import Car
+from car_rental.cars.models import Car, CarCategorie
 
 
 class CarRegisterUseCase:
@@ -8,6 +10,8 @@ class CarRegisterUseCase:
         car_queryset = Car.objects.filter(chassis_number=chassis_number)
         if car_queryset.exists() is True:
             raise ChassisNumberAlreadyExists()
+
+        categorie = CarCategorie.objects.get(categorie=categorie)
 
         car = Car.objects.create(chassis_number=chassis_number, manufacturer=manufacturer, categorie=categorie,
                                  manufacture_year=manufacture_year, model_year=model_year, mileage=mileage,

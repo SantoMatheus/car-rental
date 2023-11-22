@@ -1,38 +1,30 @@
-from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from car_rental.authentication.auth_classes.app_authentication import AppAuthentication
 from car_rental.cars.serializers import CarRegisterInputSerializer, CarRegisterOutputSerializer, \
-    CategorieRegisterOutputSerializer, CategorieRegisterInputSerializer
+    CategorieRegisterOutputSerializer, CategorieRegisterInputSerializer, CategorieEditInputSerializer, \
+    GetCarOutputSerializer
 from car_rental.cars.use_cases.car_register_use_case import CarRegisterUseCase
+from car_rental.cars.use_cases.categorie_edit_use_case import CategorieEditUseCase
 from car_rental.cars.use_cases.categorie_register_use_case import CategorieRegisterUseCase
+from car_rental.cars.use_cases.get_car_use_case import GetCarUseCase
+from car_rental.cars.use_cases.get_categorie_use_case import GetCategorieUseCase
 
 
 class CategorieRegisterViewSet(APIView):
-    authentication_classes = [AppAuthentication]
-    permission_classes = [IsAuthenticated]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.categorie_register_use_case = CategorieRegisterUseCase()
 
-    @swagger_auto_schema(
-        request_body=CategorieRegisterInputSerializer(),
-        responses={
-            status.HTTP_201_CREATED: CategorieRegisterOutputSerializer(),
-            status.HTTP_400_BAD_REQUEST: 'Bad request.'
-        }
-    )
     def post(self, request: Request):
         serializer = CategorieRegisterInputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        categorie = serializer.validated_data('categorie')
-        value = serializer.validated_data('categorie')
+        categorie = serializer.validated_data['categorie']
+        value = serializer.validated_data['value']
 
         new_categorie = self.categorie_register_use_case.execute(categorie=categorie, value=value)
 
@@ -41,20 +33,11 @@ class CategorieRegisterViewSet(APIView):
 
 
 class CarRegisterViewSet(APIView):
-    authentication_classes = [AppAuthentication]
-    permission_classes = [IsAuthenticated]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.car_register_use_case = CarRegisterUseCase()
 
-    @swagger_auto_schema(
-        request_body=CarRegisterInputSerializer(),
-        responses={
-            status.HTTP_201_CREATED: CarRegisterOutputSerializer(),
-            status.HTTP_400_BAD_REQUEST: 'Bad request.'
-        }
-    )
     def post(self, request: Request):
         serializer = CarRegisterInputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -77,3 +60,49 @@ class CarRegisterViewSet(APIView):
 
         output = CarRegisterOutputSerializer(instance=new_car)
         return Response(data=output.data, status=status.HTTP_201_CREATED)
+
+
+class CategorieEditViewSet(APIView):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.categorie_edit_use_case = CategorieEditUseCase()
+
+    def patch(self, request: Request, id_categorie: str):
+        serializer = CategorieEditInputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        categorie_name = serializer.validated_data['categorie_name']
+        value = serializer.validated_data['value']
+
+        categorie = self.categorie_edit_use_case.execute(id_categorie=id_categorie,
+                                                         categorie_name=categorie_name, new_value=value)
+        output = CategorieRegisterOutputSerializer(instance=categorie)
+
+        return Response(data=output.data, status=status.HTTP_200_OK)
+
+
+class GetCategorieViewSet(APIView):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.get_categorie_use_case = GetCategorieUseCase()
+
+    def get(self, request: Request):
+        car_categorie = self.get_categorie_use_case.execute()
+        output = CategorieRegisterOutputSerializer(instance=car_categorie, many=True)
+
+        return Response(data=output.data, status=status.HTTP_200_OK)
+
+
+class GetCarViewSet(APIView):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.get_car_use_case = GetCarUseCase()
+
+    def get(self, request: Request, car_plate: str):
+        car = self.get_car_use_case.execute(car_plate=car_plate)
+
+        output = CarRegisterOutputSerializer(instance=car, many=True)
+        return Response(data=output.data, status=status.HTTP_200_OK)

@@ -13,7 +13,7 @@ class LegalRepresentativeRegisterUseCase:
         legal_representative = LegalRepresentative.objects.create(name=name, cpf=cpf, birth_date=birth_date,
                                                                   phone_number=phone_number, zip_code=zip_code,
                                                                   street_name=street_name, number=number, city=city,
-                                                                  state=state, country=country)
+                                                                  state=state, country=country, username=cpf)
         legal_representative.set_password(raw_password=password)
         legal_representative.save()
         return legal_representative

@@ -25,7 +25,7 @@ class LegalRepresentative(TimeStampedModel, AbstractUser):
 class Company(TimeStampedModel):
     id = models.UUIDField(default=uuid.uuid4, unique=True)
     legal_representative = models.ForeignKey(LegalRepresentative, on_delete=CASCADE,
-                                             related_name="legal_representative")
+                                             related_name="companies")
     register_name = models.CharField(max_length=100)
     company_name = models.CharField(max_length=100)
     cnpj = models.CharField(max_length=14, primary_key=True)

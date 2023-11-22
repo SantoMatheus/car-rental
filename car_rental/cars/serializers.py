@@ -7,7 +7,7 @@ class CarRegisterInputSerializer(serializers.Serializer):
 
     chassis_number = serializers.CharField(max_length=17, min_length=17)
     manufacturer = serializers.CharField(max_length=50)
-    categorie = serializers.CharField()
+    categorie = serializers.ChoiceField(choices=CarCategorie.CarCategorieChoices.choices)
     manufacture_year = serializers.DateTimeField()
     model_year = serializers.DateTimeField()
     mileage = serializers.FloatField()
@@ -21,14 +21,31 @@ class CategorieRegisterInputSerializer(serializers.Serializer):
     categorie = serializers.CharField(max_length=30)
     value = serializers.FloatField()
 
+
 class CategorieRegisterOutputSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarCategorie
-        fields = ['categorie', 'value']
+        fields = ['id', 'categorie', 'value']
+
 
 class CarRegisterOutputSerializer(serializers.ModelSerializer):
-    type = CategorieRegisterOutputSerializer()
+    categorie = CategorieRegisterOutputSerializer()
 
+    class Meta:
+        model = Car
+        fields = '__all__'
+
+
+class CategorieEditInputSerializer(serializers.Serializer):
+    categorie_name = serializers.CharField(max_length=30)
+    value = serializers.FloatField()
+
+
+class GetCarInputSerializer(serializers.Serializer):
+    car_plate = serializers.CharField(min_length=7, max_length=7)
+
+
+class GetCarOutputSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
         fields = '__all__'

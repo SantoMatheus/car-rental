@@ -21,6 +21,7 @@ class Rent(TimeStampedModel):
         CASH = ChoiceItem("CASH")
 
     id = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    # criar atributo charge_number
     user = models.ForeignKey(LegalRepresentative, on_delete=models.CASCADE, related_name='client')
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
     days_amount = models.CharField(max_length=10)

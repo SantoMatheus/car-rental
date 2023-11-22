@@ -6,7 +6,7 @@ class CategorieRegisterUseCase:
 
     def execute(self, categorie: str, value: float):
 
-        categorie_queryset = CarCategorie.objects.filter(categorie)
+        categorie_queryset = CarCategorie.objects.filter(categorie=categorie)
         if categorie_queryset.exists() is True:
             raise CategorieAlreadyExists()
 
